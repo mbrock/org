@@ -1,8 +1,6 @@
-#+TITLE: DappHub blog posts
-#+STARTUP: showall
-#+HTML_HEAD: <link rel=stylesheet href=../index.css>
+* DappHub blog posts
 
-* Nix: package management done right
+** Nix: package management done right
 This post explains how to use Nix to install DappHub's developer
 tools, and then goes into some more detail about how it all works.
 
@@ -10,7 +8,7 @@ There are a lot of systems for managing software packages.  We chose
 to build on [[https://nixos.org/nix][Nix]] because we think it significantly advances the state
 of the art; it's not just yet another package manager.
 
-** Basic setup
+*** Basic setup
 Installing Nix and our tools on your GNU/Linux or OS X computer is
 unobtrusive, and easy to completely undo should you so wish.
 
@@ -53,7 +51,7 @@ set of Ethereum-related tools.
 If you have any problems or questions, join our chat!  There's also
 the [[https://nixos.org/nix/manual/][Nix manual]] with details on using and developing with Nix.
 
-** Nixpkgs and NixOS
+*** Nixpkgs and NixOS
 Nix as a base layer is a very general build and installation tool. As
 a conceptually separate entity, there is [[https://github.com/NixOS/nixpkgs][Nixpkgs]], a large repository
 of package definitions. The Nixpkgs repository has more than 100,000
@@ -80,7 +78,7 @@ With NixOS, your entire system configuration is a derivation, and all
 changes to your setup are both atomic and reversible.  (I've been
 running it on my laptop since 2015 and I can't imagine going back.)
 
-** More about Nix
+*** More about Nix
 All files installed via Nix are guaranteed to end up under a single
 self-contained directory, usually =/nix=.  If you look there after
 you've installed some packages, you'll see a bunch of directories with
@@ -112,7 +110,7 @@ of why it's useful to write packages with a functional language, you
 could look at [[https://github.com/dapphub/nixpkgs-dapphub/blob/cb52ad4d103e72f297e5948a0bb142c3390326c2/overlay/solc-versions.nix][=solc-versions.nix=]] in the DappHub overlay, which
 defines many versions of the Solidity compiler.
 
-** Plans for Nix in dapp
+*** Plans for Nix in dapp
 With the infrastructure in place, we're going to proceed with
 integrating Nix with the =dapp= toolkit.  The first use case is the
 ability to build and test dapps with different Solidity compiler
