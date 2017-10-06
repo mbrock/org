@@ -35,7 +35,20 @@ dapp 0.5.7
 #+END_EXAMPLE
 
 Because of Nix's design, this will bring exactly one command into your
-=PATH= without any other visible impact on your system.
+=PATH= without any other visible impact on your system: the
+dependencies of =dapp= (like =solc=, =seth=, and =hevm=) are only
+visible for =dapp= itself.
+
+To make our whole tool suite available including =solc=, do:
+
+#+BEGIN_EXAMPLE
+$ nix-env -iA dapphub.{dapp,seth,hevm,solc}
+#+END_EXAMPLE
+
+Our channel has the latest versions of our developer tools with signed
+binary packages for Linux and OS X, along with versions of the
+Solidity compiler going back to 0.4.5, the latest Geth, and a growing
+set of Ethereum-related tools.
 
 If you have any problems or questions, join our chat!  There's also
 the [[https://nixos.org/nix/manual/][Nix manual]] with details on using and developing with Nix.
@@ -56,12 +69,6 @@ Vendors can provide /overlays/ based on Nixpkgs.  For example, Mozilla
 has its own overlay with cutting edge versions of Rust, Servo,
 Firefox, and so on.  The DappHub channel is also an overlay, pinned to
 a specific revision of Nixpkgs.
-
-Our overlay has the latest versions of our developer tools with signed
-binary packages for Linux and OS X, along with versions of the
-Solidity compiler going back to 0.4.5, the latest Geth, the Python
-Web3 libraries, and other Ethereum-related tools; we'll keep
-adding more.
 
 Nixpkgs is structurally similar to FreeBSD's ports repository, and it
 acts like a version controlled history of an entire software
