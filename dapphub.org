@@ -6,8 +6,9 @@
 This post explains how to use Nix to install DappHub's developer
 tools, and then goes into some more detail about how it all works.
 
-There are a lot of systems for managing software packages. We think
-that [[https://nixos.org/nix][Nix]] significantly advances the state of the art.
+There are a lot of systems for managing software packages.  We chose
+to build on [[https://nixos.org/nix][Nix]] because we think it significantly advances the state
+of the art: it's not just yet another package manager.
 
 ** Basic setup
 Installing Nix and our tools on your GNU/Linux or OS X computer is
