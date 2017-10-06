@@ -107,7 +107,7 @@ reduce duplication.
 
 All of Nixpkgs is written in this language, but for a specific example
 of why it's useful to write packages with a functional language, you
-could look at [[https://github.com/dapphub/nixpkgs-dapphub/blob/cb52ad4d103e72f297e5948a0bb142c3390326c2/overlay/solc-versions.nix][=solc-versions.nix=]] in the DappHub overlay, which
+could look at [[https://github.com/dapphub/nixpkgs-dapphub/blob/cb52ad4d103e72f297e5948a0bb142c3390326c2/overlay/solc-versions.nix][solc-versions.nix]] in the DappHub overlay, which
 defines many versions of the Solidity compiler.
 
 *** Plans for Nix in dapp
