@@ -40,8 +40,6 @@ Because of Nix's design, this will bring exactly one command into your
 If you have any problems or questions, join our chat!  There's also
 the [[https://nixos.org/nix/manual/][Nix manual]] with details on using and developing with Nix.
 
-Read on for a brief introduction to how Nix works...
-
 ** Nixpkgs and NixOS
 Nix as a base layer is a very general build and installation tool. As
 a conceptually separate entity, there is [[https://github.com/NixOS/nixpkgs][Nixpkgs]], a large repository
