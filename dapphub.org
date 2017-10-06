@@ -1,0 +1,120 @@
+#+TITLE: DappHub blog posts
+#+STARTUP: showall
+#+HTML_HEAD: <link rel=stylesheet href=../index.css>
+
+* Nix: package management done right
+This post explains how to use Nix to install DappHub's developer
+tools, and then goes into some more detail about how it all works.
+
+There are a lot of systems for managing software packages. We think
+that [[https://nixos.org/nix][Nix]] significantly advances the state of the art.
+
+** Basic setup
+Installing Nix and our tools on your GNU/Linux or OS X computer is
+unobtrusive, and easy to completely undo should you so wish.
+
+(It's also supposed to work with the new Linux subsystem for Windows,
+but we haven't tried this ourselves; if you do, please let us know.)
+
+First run the Nix installer:
+
+#+BEGIN_EXAMPLE
+$ curl https://nixos.org/nix/install | sh
+#+END_EXAMPLE
+
+The installer will tell you to add a line to your shell configuration;
+do that, then continue:
+
+#+BEGIN_EXAMPLE
+$ nix-channel --add https://nix.dapphub.com/pkgs/dapphub
+$ nix-channel --update
+$ nix-env -iA dapphub.dapp
+$ dapp --version
+dapp 0.5.7
+#+END_EXAMPLE
+
+Because of Nix's design, this will bring exactly one command into your
+=PATH= without any other visible impact on your system.
+
+If you have any problems or questions, join our chat!  There's also
+the [[https://nixos.org/nix/manual/][Nix manual]] with details on using and developing with Nix.
+
+Read on for a brief introduction to how Nix works...
+
+** Nixpkgs and NixOS
+Nix as a base layer is a very general build and installation tool. As
+a conceptually separate entity, there is [[https://github.com/NixOS/nixpkgs][Nixpkgs]], a large repository
+of package definitions. The Nixpkgs repository has more than 100,000
+commits and is very actively maintained.
+
+As an example of a Nix package in Nixpkgs, you might look at [[https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/science/logic/z3/default.nix][the Z3
+package definition]], providing the SMT logic solver used by recent
+versions of Solidity.  The package is defined in terms of the location
+and hash of its source code, which dependencies are needed, and some
+simple modifications to the default Make-based builder.
+
+Vendors can provide /overlays/ based on Nixpkgs.  For example, Mozilla
+has its own overlay with cutting edge versions of Rust, Servo,
+Firefox, and so on.  The DappHub channel is also an overlay, pinned to
+a specific revision of Nixpkgs.
+
+Our overlay has the latest versions of our developer tools with signed
+binary packages for Linux and OS X, along with versions of the
+Solidity compiler going back to 0.4.5, the latest Geth, the Python
+Web3 libraries, and other Ethereum-related tools; we'll keep
+adding more.
+
+Nixpkgs is structurally similar to FreeBSD's ports repository, and it
+acts like a version controlled history of an entire software
+distribution.  You can install packages from any revision of Nixpkgs,
+which is great for reproducibility.
+
+There's also [[https://nixos.org][NixOS]], a Linux distribution fully based on Nix.
+With NixOS, your entire system configuration is a derivation, and all
+changes to your setup are both atomic and reversible.  (I've been
+running it on my laptop since 2015 and I can't imagine going back.)
+
+** More about Nix
+All files installed via Nix are guaranteed to end up under a single
+self-contained directory, usually =/nix=.  If you look there after
+you've installed some packages, you'll see a bunch of directories with
+hashes in their names. It's like a content-addressed cache. Everything
+there is immutable.
+
+So Nix follows the same philosophy as IPFS, Swarm, and other
+content-addressed systems. This has cascading benefits and it's a big
+part of why the system is so robust and flexible.
+
+For example, there is no problem at all with having several different
+versions of a library depended on by different programs. The different
+versions will just end up with different hashes, and each program will
+link exactly to the version it needs.
+
+Nix is actually an implementation of a package specification language,
+which happens to be a simple purely functional language. A package is
+defined as a function that takes its dependencies as arguments, and
+returns an unambiguous build description called a /derivation/.
+
+If you haven't programmed with a purely functional language before,
+you can basically think of it as a kind of YAML or JSON, but with
+simple functions. So packages are mostly made up of nested records
+that define properties, but you can also define functions to
+reduce duplication.
+
+All of Nixpkgs is written in this language, but for a specific example
+of why it's useful to write packages with a functional language, you
+could look at [[https://github.com/dapphub/nixpkgs-dapphub/blob/cb52ad4d103e72f297e5948a0bb142c3390326c2/overlay/solc-versions.nix][=solc-versions.nix=]] in the DappHub overlay, which
+defines many versions of the Solidity compiler.
+
+** Plans for Nix in dapp
+With the infrastructure in place, we're going to proceed with
+integrating Nix with the =dapp= toolkit.  The first use case is the
+ability to build and test dapps with different Solidity compiler
+versions without any tedious manual management.
+
+We have more use cases in mind, like the ability to easily spin up a
+private =geth= testnet with your dapp deployed, and we even want to
+experiment with defining Solidity packages as Nix derivations.
+
+It's exciting to finally have a really good solution to package
+management, and we hope you'll try it out.
